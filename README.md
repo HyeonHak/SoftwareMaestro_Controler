@@ -7,7 +7,6 @@
 
 air_quality_sensor - 온습도 측정값을 bluetooth 통신으로 전달
 ir_transmitter - bluetooth 입력값을 serial monitor에 출력 (입력받은 ircode를 기기로 송신해줄 예정)
---------------------------------------
 get_ircode - ir수신기 입력값 분석 결과를 serial monitor에 출력
 
 ## 업데이트 내역
