@@ -6,6 +6,7 @@
 ## 파일 설명 
 
 ir_transmitter - bluetooth 입력값을 serial monitor에 출력 (입력받은 ircode를 기기로 송신해줄 예정)
+
 get_ircode - ir수신기 입력값 분석 결과를 serial monitor에 출력
 
 ## 실행 방법
