@@ -18,15 +18,21 @@ void setup() {
 }
 
 void loop() {
+  
+ unsigned long senddata;
  while(BLE.available())
   {
     char myChar = (char)BLE.read();
     Code+=myChar;
     delay(5);
   }
-  if(!Code.equals(""))
+
+  if(Code.equals("1"))
   {
-    Serial.println("input value: "+Code);
+    Serial.println("input value : "+Code);
+    senddata = 0x48B7C837;
+    Serial.println(senddata);
     Code="";
+    irsend.sendNEC(senddata, 32);
   }
 }
