@@ -89,12 +89,14 @@ void loop()
           
           // send a standard http response header
           // use \r\n instead of many println statements to speedup data send
+          
           client.print(
             "HTTP/1.1 200 OK\r\n"
             "Content-Type: text/html\r\n"
             "Connection: close\r\n"  // the connection will be closed after completion of the response
             "Refresh: 20\r\n"        // refresh the page automatically every 20 sec
             "\r\n");
+          /*
           client.print("<!DOCTYPE HTML>\r\n");
           client.print("<html>\r\n");
           client.print("<h1>Hello World!</h1>\r\n");
@@ -104,8 +106,7 @@ void loop()
           client.print("Analog input A0: ");
           client.print(analogRead(0));
           client.print("<br>\r\n");
-          client.print("</html>\r\n");
-          
+          client.print("</html>\r\n");*/
           break;
         }
         if (c == '\n') {
@@ -135,21 +136,31 @@ void loop()
     // give the web browser time to receive the data
     delay(10);
 
-    // close the connection:
-    Serial.println("Good bye");
-    Serial.println(Send_ir);
-
-    const char *ch = Send_ir.c_str();
-    Serial.println(ch);
-    
-    SEND_IR = strtoul(ch,NULL,16);
-    
-    Serial.println(SEND_IR,HEX);
-    irsend.sendNEC(SEND_IR,32);
-    
+          
     client.print("BYE BYE");
     client.stop();
     Serial.println("Client disconnected");
+    
+    // close the connection:
+    Serial.println("Good bye");
+
+    Serial.println(Send_ir);
+    char ch[100];
+    strcpy(ch, Send_ir.c_str());
+    Serial.println(ch);
+    char *ptr = strtok(ch, "&");      // " " 공백 문자를 기준으로 문자열을 자름, 포인터 반환
+
+    while (ptr != NULL)               // 자른 문자열이 나오지 않을 때까지 반복
+    {
+        SEND_IR = strtoul(ptr,NULL,16);
+    
+       Serial.println(SEND_IR,HEX);
+        irsend.sendNEC(SEND_IR,32);
+        
+        ptr = strtok(NULL, "&");      // 다음 문자열을 잘라서 포인터를 반환
+        delay(1000);
+    }
+    
   }
 }
 
