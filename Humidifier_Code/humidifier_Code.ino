@@ -32,12 +32,14 @@ WiFiEspServer server(3000);
 IRsend irsend;
 unsigned long SEND_IR;
 
- unsigned int on_off[] = {4750,4700, 550,1500, 600,1500, 600,1500, 550,1500, 600,1500, 550,1550, 550,2600, 600,1500, 550,1500, 600,1500, 550,2600, 600,1500, 600,1500, 550,1500, 600,2600, 550,2600, 600,1500, 4750,4650, 600,1500, 550,1500, 550,1550, 600,1500, 550,1500, 600,1500, 600,2550, 600,1500, 550,1550, 550,1500, 600,2600, 550,1500, 600,1500, 600,1500, 550,2600, 600,2600, 550};
+unsigned int on_off[] = {4750,4700, 550,1500, 600,1500, 600,1500, 550,1500, 600,1500, 550,1550, 550,2600, 600,1500, 550,1500, 600,1500, 550,2600, 600,1500, 600,1500, 550,1500, 600,2600, 550,2600, 600,1500, 4750,4650, 600,1500, 550,1500, 550,1550, 600,1500, 550,1500, 600,1500, 600,2550, 600,1500, 550,1550, 550,1500, 600,2600, 550,1500, 600,1500, 600,1500, 550,2600, 600,2600, 550};
  unsigned int mist[] ={4800,4650, 550,1500, 550,1550, 550,1550, 550,1500, 550,1550, 550,1550, 500,2650, 550,1550, 500,1550, 550,2650, 550,1500, 550,2650, 550,1500, 550,1550, 550,2650, 500,1550, 550,1550, 4750,4650, 550,1550, 550,1500, 550,1550, 550,1550, 550,1500, 550,1550, 550,2600, 550,1550, 550,1550, 550,2600, 550,1550, 550,2600, 550,1550, 550,1550, 500,2650, 550,1550, 500};
  unsigned int humidity[]={4750,4650, 550,1550, 550,1550, 500,1550, 550,1550, 550,1550, 500,1550, 550,2650, 500,1550, 550,2650, 550,1500, 550,1550, 550,2600, 550,1550, 550,1550, 500,1550, 550,2650, 550,1500, 4800,4650, 550,1550, 500,1550, 550,1550, 550,1500, 550,1550, 550,1550, 500,2650, 550,1550, 550,2600, 550,1500, 600,1500, 550,2650, 550,1550, 500,1550, 550,1550, 550,2600, 550};
 unsigned int anion[]={4750,4700, 500,1550, 550,1550, 600,1500, 500,1550, 500,1600, 500,1550, 550,2650, 600,1500, 500,2650, 500,1600, 500,2650, 500,1650, 450,2650, 550,1550, 500,1600, 500,1550, 600,1500, 4700,4700, 500,1600, 500,1550, 550,1550, 500,1600, 500,1550, 550,1550, 500,2650, 550,1550, 500,2700, 500,1550, 500,2700, 500,1550, 550,2650, 500,1550, 550,1550, 500,1600, 500};
  //unsigned int timer[]={4750,4700, 550,1500, 550,1550, 550,1500, 600,1500, 600,1500, 550,1550, 500,2650, 550,1550, 500,1550, 600,1500, 550,1550, 500,2650, 550,2650, 500,2650, 550,1550, 500,1550, 550,1550, 4750,4650, 550,1550, 550,1550, 500,1550, 550,1550, 550,1500, 550,1550, 550,2650, 500,1550, 550,1550, 550,1500, 550,1550, 550,2650, 500,2650, 550,2650, 500,1550, 550,1550, 550};
  //unsigned int sleep_mode[]={4750,4650, 550,1550, 500,1600, 500,1550, 550,1550, 500,1600, 500,1550, 550,2650, 500,1550, 550,1550, 550,2600, 550,2650, 550,1500, 550,1550, 550,2650, 500,1550, 550,1550, 550,1500, 4750,4700, 550,1500, 550,1550, 550,1550, 500,1550, 550,1550, 550,1550, 500,2650, 550,1550, 500,1550, 550,2650, 550,2600, 550,1550, 550,1550, 500,2650, 550,1550, 500,1550, 550};
+
+
 void setup()
 {
   // initialize serial for debugging
@@ -94,12 +96,14 @@ void loop()
           
           // send a standard http response header
           // use \r\n instead of many println statements to speedup data send
+          
           client.print(
             "HTTP/1.1 200 OK\r\n"
             "Content-Type: text/html\r\n"
             "Connection: close\r\n"  // the connection will be closed after completion of the response
             "Refresh: 20\r\n"        // refresh the page automatically every 20 sec
             "\r\n");
+          /*
           client.print("<!DOCTYPE HTML>\r\n");
           client.print("<html>\r\n");
           client.print("<h1>Hello World!</h1>\r\n");
@@ -109,8 +113,7 @@ void loop()
           client.print("Analog input A0: ");
           client.print(analogRead(0));
           client.print("<br>\r\n");
-          client.print("</html>\r\n");
-          
+          client.print("</html>\r\n");*/
           break;
         }
         if (c == '\n') {
@@ -140,50 +143,58 @@ void loop()
     // give the web browser time to receive the data
     delay(10);
 
+          
+    client.print("BYE BYE");
+    client.stop();
+    Serial.println("Client disconnected");
+    
     // close the connection:
     Serial.println("Good bye");
+
     Serial.println(Send_ir);
-
-    const char *ch = Send_ir.c_str();
+    char ch[100];
+    strcpy(ch, Send_ir.c_str());
     Serial.println(ch);
+    char *ptr = strtok(ch, "&");      // " " 공백 문자를 기준으로 문자열을 자름, 포인터 반환
 
-
-    /*
-    SEND_IR = strtoul(ch,NULL,16);
+    while (ptr != NULL)               // 자른 문자열이 나오지 않을 때까지 반복
+    {
+        SEND_IR = strtoul(ptr,NULL,16);
     
-    Serial.println(SEND_IR,HEX);
-    irsend.sendNEC(SEND_IR,32);
-    */
-      if(Send_ir=="0x416ED707")
+       Serial.println(SEND_IR,HEX);
+
+if(strcmp(ptr,"0x416ED707"))
       {
          irsend.sendRaw(on_off, sizeof(on_off) / sizeof(on_off[0]),38);
       }
-      else if(Send_ir=="0x83821F1C")
+      else if(strcmp(ptr,"0x83821F1C"))
       {
          irsend.sendRaw(mist, sizeof(mist) / sizeof(mist[0]),38);
       }
-      else if(Send_ir=="0xD0955537")
+      else if(strcmp(ptr,"0xD0955537"))
       {
          irsend.sendRaw(humidity, sizeof(humidity) / sizeof(humidity[0]),38);
       }
-      else if(Send_ir=="0xEAADC1DC")
+      else if(strcmp(ptr,"0xEAADC1DC"))
       {
          irsend.sendRaw(anion, sizeof(anion) / sizeof(anion[0]),38);
       }
      /* 메모리상의 이유로 잠시 생략
-      else if(Send_ir=="0xACD56894")
+      else if(strcmp(ptr,"0xACD56894"))
       {
          irsend.sendRaw(timer, sizeof(timer) / sizeof(timer[0]),38);
       }
-      else if(Send_ir=="0x7E5BBE2C")
+      else if(strcmp(ptr,"0x7E5BBE2C"))
       {
          irsend.sendRaw(sleep_mode, sizeof(sleep_mode) / sizeof(sleep_mode[0]),38);
       }
      */
+
+        
+        ptr = strtok(NULL, "&");      // 다음 문자열을 잘라서 포인터를 반환
+        delay(1000);
+    }
     
-    client.print("BYE BYE");
-    client.stop();
-    Serial.println("Client disconnected");
   }
 }
 
