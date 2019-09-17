@@ -17,6 +17,9 @@ Compile with Arduino IDE
 
 * 0.0.1
     * 작업 진행 중
+* 0.1.0
+    * 공기질측정기 서버 repeating 가능하도록 수정
+
 
 ## 개발자
 
