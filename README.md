@@ -5,8 +5,12 @@
 
 ## 파일 설명 
 
-ir_transmitter - bluetooth 입력값을 serial monitor에 출력 (입력받은 ircode를 기기로 송신해줄 예정)
+WebServer - wifi를 통해 전송받은 string을 "&"로 split하여 ir송신.
+                string은 구분자 "&"로 묶인 16진수 ircode들.
+Humidifier_Code - WebServer + 가습기의 16진수 ircode에 대응하는 raw Data를 ir송신.
 
+
+ir_transmitter - bluetooth 입력값을 serial monitor에 출력
 get_ircode - ir수신기 입력값 분석 결과를 serial monitor에 출력
 
 ## 실행 방법
@@ -18,7 +22,7 @@ Compile with Arduino IDE
 * 0.0.1
     * 작업 진행 중
 * 0.1.0
-    * ir trasmitter 서버 repeating 가능하도록 수정
+    * 기기제어부 서버 개발완료
 
 
 ## 개발자
