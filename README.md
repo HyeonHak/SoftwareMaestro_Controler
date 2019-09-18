@@ -26,7 +26,9 @@ Compile with Arduino IDE
 * 0.0.1
     * 작업 진행 중
 * 0.1.0
-    * 기기제어부 서버 개발완료
+    * 웹 서버 구축
+    * wifi 모듈 연결
+    * ircode 송신
 
 
 ## 개발자
