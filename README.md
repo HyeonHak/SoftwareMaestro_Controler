@@ -12,7 +12,9 @@ WebServer - wifi를 통해 전송받은 string을 "&"로 split하여 ir송신.
 Humidifier_Code - WebServer + 가습기의 16진수 ircode에 대응하는 raw Data를 ir송신.
 
 
+
 ir_transmitter - bluetooth 입력값을 serial monitor에 출력
+
 get_ircode - ir수신기 입력값 분석 결과를 serial monitor에 출력
 
 ## 실행 방법
