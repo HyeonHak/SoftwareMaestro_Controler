@@ -192,7 +192,7 @@ if(strcmp(ptr,"0x416ED707")==0)
 
         
         ptr = strtok(NULL, "&");      // 다음 문자열을 잘라서 포인터를 반환
-        delay(1000);
+        delay(40);
     }
     
   }
