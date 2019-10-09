@@ -13,7 +13,6 @@ web_server_for_humidifier - WebServer + 가습기의 16진수 ircode에 대응�
 
 
 
-ir_transmitter - bluetooth 입력값을 serial monitor에 출력
 
 get_ircode - ir수신기 입력값 분석 결과를 serial monitor에 출력
 
