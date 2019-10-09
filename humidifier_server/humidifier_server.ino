@@ -65,7 +65,7 @@ void setup()
   }
 
  // Serial.println("You're connected to the network");
-  //printWifiStatus();
+  //print_wifi_status();
   
   // start the web server on port 80
   server.begin();
@@ -153,7 +153,7 @@ void loop()
 
     //Serial.println(Send_ir);
     char ch[100];
-    strcpy(ch, Send_ir.c_str());
+    strcpy(ch, Send_ir.c_str());      // 라즈베리파이로부터 받은 String형 Send_ir을 char형 ch로 변환.
     //Serial.println(ch);
     char *ptr = strtok(ch, "&");      // " " 공백 문자를 기준으로 문자열을 자름, 포인터 반환
 
@@ -199,7 +199,7 @@ if(strcmp(ptr,"0x416ED707")==0)
 }
 
 /*
-void printWifiStatus()
+void print_wifi_status()
 {
   // print the SSID of the network you're attached to
   Serial.print("SSID: ");
