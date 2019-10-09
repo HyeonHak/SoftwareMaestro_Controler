@@ -5,11 +5,11 @@
 
 ## 파일 설명 
 
-web_server_original - wifi를 통해 전송받은 string을 "&"로 split하여 ir송신.
+aircleaner_web_server & airconditioner_web_server - wifi를 통해 전송받은 string을 "&"로 split하여 ir송신.
 
                 string은 구분자 "&"로 묶인 16진수 ircode들. ex) 0x48B7C837&0x48B78877&0x48B78877
                 
-web_server_for_humidifier - WebServer + 가습기의 16진수 ircode에 대응하는 raw Data를 ir송신.
+humidifier_web_server - aircleaner_web_server & airconditioner_web_server + 가습기의 16진수 ircode에 대응하는 raw Data를 ir송신.
 
 
 
