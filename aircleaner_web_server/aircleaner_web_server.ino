@@ -22,7 +22,7 @@
 SoftwareSerial Serial1(6, 7); // RX, TX
 #endif
 
-char ssid[] = "pleasebreath";            // your network SSID (name)
+char ssid[] = "netis2G";            // your network SSID (name)
 char pass[] = "tnawhatnlwk1";        // your network password
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
 int reqCount = 0;                // number of requests received
