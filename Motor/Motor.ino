@@ -41,7 +41,7 @@ Servo myservo;  // create servo object to control a servo
 
 int pos = 0;    // variable to store the servo position
 bool is_open = false;
-
+String str;
 void setup() {
   
     // initialize serial for debugging
@@ -81,15 +81,17 @@ void loop() {
   // listen for incoming clients
   WiFiEspClient client = server.available();
   if (client) {
+    bool Data = false;
     Serial.println("New client");
     // an http request ends with a blank line
     boolean currentLineIsBlank = true;
-    String str;
+    str = "";
     while (client.connected()) {
       if (client.available()) {
+        
         char c = client.read();
-        Serial.write(c);
-        str += c;
+        //Serial.write(c);
+        
         // if you've gotten to the end of the line (received a newline
         // character) and the line is blank, the http request has ended,
         // so you can send a reply
@@ -98,7 +100,7 @@ void loop() {
           
           // send a standard http response header
           // use \r\n instead of many println statements to speedup data send
-          client.print(
+         /* client.print(
             "HTTP/1.1 200 OK\r\n"
             "Content-Type: text/html\r\n"
             "Connection: close\r\n"  // the connection will be closed after completion of the response
@@ -113,7 +115,7 @@ void loop() {
           client.print("Analog input A0: ");
           client.print(analogRead(0));
           client.print("<br>\r\n");
-          client.print("</html>\r\n");
+          client.print("</html>\r\n");*/
           break;
         }
         if (c == '\n') {
@@ -124,6 +126,15 @@ void loop() {
           // you've gotten a character on the current line
           currentLineIsBlank = false;
         }
+
+        if(c == '?' && !Data){
+          Data = true;
+        }
+        else if(c ==' '&& Data)
+          Data = false;
+        else if(Data){
+          str+=c;
+        }
       }
     }
     // give the web browser time to receive the data
@@ -132,26 +143,33 @@ void loop() {
     // close the connection:
     client.stop();
     Serial.println("Client disconnected");
-  }
-
+    if(str == "OPEN" || str == "CLOSE")
+    Serial.println(str);
+    
   if(str == "OPEN"){
     if(!is_open){
       is_open = true;
       Open();
     }
   }
+  
   else if(str == "CLOSE"){
     if(is_open){
       is_open = false;
       Close();
     }
   }
+  
+  str="";
+  
+  }
+  
 }
 
 
 
 void Open(){
-  for (pos = 0; pos <= 180; pos += 1) { // goes from 0 degrees to 180 degrees
+  for (; pos <= 180; pos += 1) { // goes from 0 degrees to 180 degrees
     // in steps of 1 degree
     myservo.write(pos);              // tell servo to go to position in variable 'pos'
     delay(15);                       // waits 15ms for the servo to reach the position
@@ -159,7 +177,7 @@ void Open(){
 }
 
 void Close(){
-  for (pos = 180; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
+  for (; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
     myservo.write(pos);              // tell servo to go to position in variable 'pos'
     delay(15);                       // waits 15ms for the servo to reach the position
   }
