@@ -157,6 +157,7 @@ void  dumpCode (decode_results *results)
     Serial.print("unsigned int  data = 0x");
     Serial.print(results->value, HEX);
     Serial.println(";");
+    
   }
 }
 
@@ -170,9 +171,9 @@ void  loop ( )
   if (irrecv.decode(&results)) {  // Grab an IR code
     dumpInfo(&results);           // Output the results
     
-    dumpRaw(&results);            // Output the results in RAW format
+    //dumpRaw(&results);            // Output the results in RAW format
     dumpCode(&results);           // Output the results as source code
-    Serial.println("");           // Blank line between entries
+    //Serial.println("");           // Blank line between entries
     irrecv.resume();              // Prepare for the next value
   }
 }
