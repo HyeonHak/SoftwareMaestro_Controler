@@ -26,7 +26,7 @@
 SoftwareSerial Serial1(6, 7); // RX, TX
 #endif
 
-char ssid[] = "pleasebreath";            // your network SSID (name)
+char ssid[] = "netis2G";            // your network SSID (name)
 char pass[] = "tnawhatnlwk1";        // your network password
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
 int reqCount = 0;                // number of requests received
@@ -143,17 +143,17 @@ void loop() {
     // close the connection:
     client.stop();
     Serial.println("Client disconnected");
-    if(str == "OPEN" || str == "CLOSE")
+    if(str == "o" || str == "c")
     Serial.println(str);
     
-  if(str == "OPEN"){
+  if(str == "c"){
     if(!is_open){
       is_open = true;
       Open();
     }
   }
   
-  else if(str == "CLOSE"){
+  else if(str == "o"){
     if(is_open){
       is_open = false;
       Close();
@@ -169,7 +169,7 @@ void loop() {
 
 
 void Open(){
-  for (; pos <= 180; pos += 1) { // goes from 0 degrees to 180 degrees
+  for (; pos <= 90; pos += 1) { // goes from 0 degrees to 180 degrees
     // in steps of 1 degree
     myservo.write(pos);              // tell servo to go to position in variable 'pos'
     delay(15);                       // waits 15ms for the servo to reach the position
