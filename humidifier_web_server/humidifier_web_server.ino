@@ -32,13 +32,6 @@ WiFiEspServer server(3000);
 IRsend irsend;
 unsigned long SEND_IR;
 
-unsigned int on_off[] = {4750,4700, 550,1500, 600,1500, 600,1500, 550,1500, 600,1500, 550,1550, 550,2600, 600,1500, 550,1500, 600,1500, 550,2600, 600,1500, 600,1500, 550,1500, 600,2600, 550,2600, 600,1500, 4750,4650, 600,1500, 550,1500, 550,1550, 600,1500, 550,1500, 600,1500, 600,2550, 600,1500, 550,1550, 550,1500, 600,2600, 550,1500, 600,1500, 600,1500, 550,2600, 600,2600, 550};
- unsigned int mist[] ={4800,4650, 550,1500, 550,1550, 550,1550, 550,1500, 550,1550, 550,1550, 500,2650, 550,1550, 500,1550, 550,2650, 550,1500, 550,2650, 550,1500, 550,1550, 550,2650, 500,1550, 550,1550, 4750,4650, 550,1550, 550,1500, 550,1550, 550,1550, 550,1500, 550,1550, 550,2600, 550,1550, 550,1550, 550,2600, 550,1550, 550,2600, 550,1550, 550,1550, 500,2650, 550,1550, 500};
- unsigned int humidity[]={4750,4650, 550,1550, 550,1550, 500,1550, 550,1550, 550,1550, 500,1550, 550,2650, 500,1550, 550,2650, 550,1500, 550,1550, 550,2600, 550,1550, 550,1550, 500,1550, 550,2650, 550,1500, 4800,4650, 550,1550, 500,1550, 550,1550, 550,1500, 550,1550, 550,1550, 500,2650, 550,1550, 550,2600, 550,1500, 600,1500, 550,2650, 550,1550, 500,1550, 550,1550, 550,2600, 550};
-//unsigned int anion[]={4750,4700, 500,1550, 550,1550, 600,1500, 500,1550, 500,1600, 500,1550, 550,2650, 600,1500, 500,2650, 500,1600, 500,2650, 500,1650, 450,2650, 550,1550, 500,1600, 500,1550, 600,1500, 4700,4700, 500,1600, 500,1550, 550,1550, 500,1600, 500,1550, 550,1550, 500,2650, 550,1550, 500,2700, 500,1550, 500,2700, 500,1550, 550,2650, 500,1550, 550,1550, 500,1600, 500};
- //unsigned int timer[]={4750,4700, 550,1500, 550,1550, 550,1500, 600,1500, 600,1500, 550,1550, 500,2650, 550,1550, 500,1550, 600,1500, 550,1550, 500,2650, 550,2650, 500,2650, 550,1550, 500,1550, 550,1550, 4750,4650, 550,1550, 550,1550, 500,1550, 550,1550, 550,1500, 550,1550, 550,2650, 500,1550, 550,1550, 550,1500, 550,1550, 550,2650, 500,2650, 550,2650, 500,1550, 550,1550, 550};
- //unsigned int sleep_mode[]={4750,4650, 550,1550, 500,1600, 500,1550, 550,1550, 500,1600, 500,1550, 550,2650, 500,1550, 550,1550, 550,2600, 550,2650, 550,1500, 550,1550, 550,2650, 500,1550, 550,1550, 550,1500, 4750,4700, 550,1500, 550,1550, 550,1550, 500,1550, 550,1550, 550,1550, 500,2650, 550,1550, 500,1550, 550,2650, 550,2600, 550,1550, 550,1550, 500,2650, 550,1550, 500,1550, 550};
-
 
 void setup()
 {
@@ -51,21 +44,21 @@ void setup()
 
   // check for the presence of the shield
   if (WiFi.status() == WL_NO_SHIELD) {
-    //Serial.println("WiFi shield not present");
+    Serial.println("WiFi shield not present");
     // don't continue
     while (true);
   }
 
   // attempt to connect to WiFi network
   while ( status != WL_CONNECTED) {
-   // Serial.print("Attempting to connect to WPA SSID: ");
-    //Serial.println(ssid);
+    Serial.print("Attempting to connect to WPA SSID: ");
+    Serial.println(ssid);
     // Connect to WPA/WPA2 network
     status = WiFi.begin(ssid, pass);
   }
 
- // Serial.println("You're connected to the network");
-  //print_wifi_status();
+  Serial.println("You're connected to the network");
+  print_wifi_status();
   
   // start the web server on port 80
   server.begin();
@@ -80,7 +73,7 @@ void loop()
   if (client) {
     bool Data = false;
     String Send_ir;
-    //Serial.println("New client");
+    Serial.println("New client");
     // an http request ends with a blank line
     boolean currentLineIsBlank = true;
     while (client.connected()) {
@@ -141,55 +134,28 @@ void loop()
       
     }
     // give the web browser time to receive the data
-    delay(500);
+    delay(10);
 
           
     client.print("BYE BYE");
     client.stop();
-    //Serial.println("Client disconnected");
+    Serial.println("Client disconnected");
     
     // close the connection:
-    //Serial.println("Good bye");
+    Serial.println("Good bye");
 
-    //Serial.println(Send_ir);
+    Serial.println(Send_ir);
     char ch[100];
-    strcpy(ch, Send_ir.c_str());      // 라즈베리파이로부터 받은 String형 Send_ir을 char형 ch로 변환.
-    //Serial.println(ch);
+    strcpy(ch, Send_ir.c_str());      // 라즈베리파이로부터 받은 String형 Send_ir을 char형 ch로 변환
+    Serial.println(ch);
     char *ptr = strtok(ch, "&");      // " " 공백 문자를 기준으로 문자열을 자름, 포인터 반환
 
     while (ptr != NULL)               // 자른 문자열이 나오지 않을 때까지 반복
     {
         SEND_IR = strtoul(ptr,NULL,16);
     
-       //Serial.println(SEND_IR,HEX);
-
-if(strcmp(ptr,"0x416ED707")==0)
-      {
-         irsend.sendRaw(on_off, sizeof(on_off) / sizeof(on_off[0]),38);
-      }
-      else if(strcmp(ptr,"0x83821F1C")==0)
-      {
-         irsend.sendRaw(mist, sizeof(mist) / sizeof(mist[0]),38);
-      }
-      else if(strcmp(ptr,"0xD0955537")==0)
-      {
-         irsend.sendRaw(humidity, sizeof(humidity) / sizeof(humidity[0]),38);
-      }
-     /* 메모리상의 이유로 잠시 생략
-      else if(strcmp(ptr,"0xEAADC1DC")==0)
-      {
-         irsend.sendRaw(anion, sizeof(anion) / sizeof(anion[0]),38);
-      }
-      else if(strcmp(ptr,"0xACD56894")==0)
-      {
-         irsend.sendRaw(timer, sizeof(timer) / sizeof(timer[0]),38);
-      }
-      else if(strcmp(ptr,"0x7E5BBE2C")==0)
-      {
-         irsend.sendRaw(sleep_mode, sizeof(sleep_mode) / sizeof(sleep_mode[0]),38);
-      }
-     */
-
+       Serial.println(SEND_IR,HEX);
+        irsend.sendNEC(SEND_IR,32);
         
         ptr = strtok(NULL, "&");      // 다음 문자열을 잘라서 포인터를 반환
         delay(40);
@@ -198,7 +164,7 @@ if(strcmp(ptr,"0x416ED707")==0)
   }
 }
 
-/*
+
 void print_wifi_status()
 {
   // print the SSID of the network you're attached to
@@ -215,4 +181,4 @@ void print_wifi_status()
   Serial.print("To see this page in action, open a browser to http://");
   Serial.println(ip);
   Serial.println();
-}*/
+}
