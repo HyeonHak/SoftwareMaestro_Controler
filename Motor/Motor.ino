@@ -100,12 +100,13 @@ void loop() {
           
           // send a standard http response header
           // use \r\n instead of many println statements to speedup data send
-         /* client.print(
+         client.print(
             "HTTP/1.1 200 OK\r\n"
             "Content-Type: text/html\r\n"
             "Connection: close\r\n"  // the connection will be closed after completion of the response
             "Refresh: 20\r\n"        // refresh the page automatically every 20 sec
             "\r\n");
+            /*
           client.print("<!DOCTYPE HTML>\r\n");
           client.print("<html>\r\n");
           client.print("<h1>Hello World!</h1>\r\n");
@@ -143,17 +144,17 @@ void loop() {
     // close the connection:
     client.stop();
     Serial.println("Client disconnected");
-    if(str == "o" || str == "c")
+    if(str == "outer" || str == "inner")
     Serial.println(str);
     
-  if(str == "c"){
+  if(str == "outer"){
     if(!is_open){
       is_open = true;
       Open();
     }
   }
   
-  else if(str == "o"){
+  else if(str == "inner"){
     if(is_open){
       is_open = false;
       Close();
