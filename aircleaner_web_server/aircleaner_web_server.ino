@@ -30,7 +30,7 @@ int reqCount = 0;                // number of requests received
 WiFiEspServer server(3000);
 
 IRsend irsend;
-unsigned long SEND_IR;
+unsigned long int SEND_IR;
 
 
 void setup()
@@ -80,33 +80,12 @@ void loop()
       if (client.available()) {
         char c = client.read();
        // Serial.println(Data);
-        Serial.write(c);
+        //Serial.write(c);
         // if you've gotten to the end of the line (received a newline
         // character) and the line is blank, the http request has ended,
         // so you can send a reply
         if (c == '\n' && currentLineIsBlank) {
-          Serial.println("Sending response");
           
-          // send a standard http response header
-          // use \r\n instead of many println statements to speedup data send
-          
-          client.print(
-            "HTTP/1.1 200 OK\r\n"
-            "Content-Type: text/html\r\n"
-            "Connection: close\r\n"  // the connection will be closed after completion of the response
-            "Refresh: 20\r\n"        // refresh the page automatically every 20 sec
-            "\r\n");
-          /*
-          client.print("<!DOCTYPE HTML>\r\n");
-          client.print("<html>\r\n");
-          client.print("<h1>Hello World!</h1>\r\n");
-          client.print("Requests received: ");
-          client.print(++reqCount);
-          client.print("<br>\r\n");
-          client.print("Analog input A0: ");
-          client.print(analogRead(0));
-          client.print("<br>\r\n");
-          client.print("</html>\r\n");*/
           break;
         }
         if (c == '\n') {
@@ -134,17 +113,40 @@ void loop()
       
     }
     // give the web browser time to receive the data
-    delay(10);
+    delay(40);
 
           
     client.print("BYE BYE");
     client.stop();
+    
     Serial.println("Client disconnected");
     
     // close the connection:
     Serial.println("Good bye");
 
+    int del = Send_ir.indexOf('%');
+    Send_ir = Send_ir.substring(0,del);
+    Send_ir += '&';
     Serial.println(Send_ir);
+
+
+    while(Send_ir.length()!=0){
+      int found = Send_ir.indexOf('&');
+      String substr = Send_ir.substring(0,found);
+      Serial.println(substr);
+      const char *IR = substr.c_str();
+      
+      
+      //SEND_IR = substr.toInt();
+      SEND_IR = strtoul(IR, NULL, 16);
+      irsend.sendNEC(SEND_IR,32);
+      
+      Send_ir.remove(0,found+1);
+        delay(500);
+      
+    }
+
+    /*
     char ch[100];
     strcpy(ch, Send_ir.c_str());      // 라즈베리파이로부터 받은 String형 Send_ir을 char형 ch로 변환
     Serial.println(ch);
@@ -160,7 +162,7 @@ void loop()
         ptr = strtok(NULL, "&");      // 다음 문자열을 잘라서 포인터를 반환
         delay(40);
     }
-    
+    */
   }
 }
 

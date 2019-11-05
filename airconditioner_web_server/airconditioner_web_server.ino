@@ -151,7 +151,7 @@ void loop()
         
       } 
     }
-    delay(500);
+    delay(40);
 
           
     client.stop();
