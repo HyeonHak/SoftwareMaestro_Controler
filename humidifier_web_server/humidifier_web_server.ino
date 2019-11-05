@@ -134,7 +134,7 @@ void loop()
       
     }
     // give the web browser time to receive the data
-    delay(10);
+    delay(40);
 
           
     client.print("BYE BYE");
@@ -143,9 +143,27 @@ void loop()
     
     // close the connection:
     Serial.println("Good bye");
-
+    int del = Send_ir.indexOf('%');
+    Send_ir = Send_ir.substring(0,del);
+    Send_ir += '&';
+    
     Serial.println(Send_ir);
-    char ch[100];
+    while(Send_ir.length()!=0){
+      int found = Send_ir.indexOf('&');
+      String substr = Send_ir.substring(0,found);
+      Serial.println(substr);
+      const char *IR = substr.c_str();
+      
+      
+      //SEND_IR = substr.toInt();
+      SEND_IR = strtoul(IR, NULL, 16);
+      irsend.sendNEC(SEND_IR,32);
+      
+      Send_ir.remove(0,found+1);
+        delay(500);
+      
+    }
+    /*char ch[100];
     strcpy(ch, Send_ir.c_str());      // 라즈베리파이로부터 받은 String형 Send_ir을 char형 ch로 변환
     Serial.println(ch);
     char *ptr = strtok(ch, "&");      // " " 공백 문자를 기준으로 문자열을 자름, 포인터 반환
@@ -159,7 +177,7 @@ void loop()
         
         ptr = strtok(NULL, "&");      // 다음 문자열을 잘라서 포인터를 반환
         delay(40);
-    }
+    }*/
     
   }
 }
