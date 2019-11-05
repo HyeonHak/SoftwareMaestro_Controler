@@ -85,7 +85,9 @@ void loop()
         // character) and the line is blank, the http request has ended,
         // so you can send a reply
         if (c == '\n' && currentLineIsBlank) {
-          
+          client.print(
+            "HTTP/1.1 200 OK\r\n"
+            "\r\n");
           break;
         }
         if (c == '\n') {

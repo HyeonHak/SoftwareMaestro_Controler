@@ -8,7 +8,7 @@
 
 #endif
 
-char ssid[] = "pleasebreath";            // your network SSID (name)
+char ssid[] = "netis2G";            // your network SSID (name)
 char pass[] = "tnawhatnlwk1";       // your network password
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
 int reqCount = 0;                // number of requests received
@@ -127,6 +127,9 @@ void loop()
         char c = client.read();
         //Serial.write(c);
         if (c == '\n' && currentLineIsBlank) {
+          client.print(
+            "HTTP/1.1 200 OK\r\n"
+            "\r\n");
           break;
         }
         if (c == '\n') {
