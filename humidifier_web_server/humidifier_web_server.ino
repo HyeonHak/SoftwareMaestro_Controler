@@ -18,6 +18,7 @@
 #include "SoftwareSerial.h"
 #include <String.h>
 #include <stdlib.h>
+#include <avr/pgmspace.h>
 
 SoftwareSerial Serial1(6, 7); // RX, TX
 #endif
@@ -31,6 +32,10 @@ WiFiEspServer server(3000);
 
 IRsend irsend;
 unsigned long SEND_IR;
+unsigned int send_ir[67];
+
+const unsigned int PROGMEM power[67] = {9000,4400, 600,500, 650,500, 600,500, 650,500, 600,500, 650,450, 650,500, 650,1550, 650,1600, 600,1600, 650,1600, 600,1600, 650,1550, 650,1600, 650,1550, 650,500, 600,1600, 650,500, 600,1600, 650,500, 600,500, 650,450, 650,500, 650,450, 650,500, 650,1550, 650,500, 600,1600, 650,1600, 600,1600, 650,1550, 650,1600, 600};  // NEC 1FEA05F
+const unsigned int PROGMEM poweroff[67] = {9000,4350, 650,500, 600,500, 650,500, 600,500, 650,500, 600,500, 650,500, 600,1600, 650,1550, 650,1600, 600,1600, 650,1600, 600,1600, 650,1600, 600,1600, 650,450, 650,1600, 600,500, 650,1600, 600,500, 650,500, 600,500, 650,500, 600,500, 650,500, 600,1600, 650,450, 650,1600, 600,1600, 650,1600, 600,1600, 650,1550, 650};  // NEC 1FEA05F
 
 
 void setup()
@@ -125,8 +130,8 @@ void loop()
     
     // close the connection:
     Serial.println("Good bye");
-    int del = Send_ir.indexOf('%');
-    Send_ir = Send_ir.substring(0,del);
+    //int del = Send_ir.indexOf('%');
+    //Send_ir = Send_ir.substring(0,del);
     Send_ir += '&';
     
     Serial.println(Send_ir);
@@ -134,13 +139,28 @@ void loop()
       int found = Send_ir.indexOf('&');
       String substr = Send_ir.substring(0,found);
       Serial.println(substr);
-      const char *IR = substr.c_str();
       
-      
-      //SEND_IR = substr.toInt();
-      SEND_IR = strtoul(IR, NULL, 16);
-      irsend.sendNEC(SEND_IR,32);
-      
+      /*if(substr.equals("power")==1)
+      {
+         for(int k=0;k<67;k++)
+          send_ir[k] = pgm_read_word_near(power + k);
+        irsend.sendRaw(send_ir, sizeof(send_ir) / sizeof(send_ir[0]),38);
+      }
+
+      if(substr.equals("poweroff")==1)
+      {
+         for(int k=0;k<67;k++)
+          send_ir[k] = pgm_read_word_near(poweroff + k);
+        irsend.sendRaw(send_ir, sizeof(send_ir) / sizeof(send_ir[0]),38);
+      }*/
+      //else{
+        const char *IR = substr.c_str();
+        
+        
+        //SEND_IR = substr.toInt();
+        SEND_IR = strtoul(IR, NULL, 16);
+        irsend.sendNEC(SEND_IR,32);
+      //}
       Send_ir.remove(0,found+1);
         delay(500);
       
